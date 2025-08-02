@@ -1,6 +1,7 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const getAll = async (req, res) => {
   try {
@@ -45,7 +46,10 @@ const login = async (req, res) => {
       user: { id: user.id, username: user.username, fullname: user.fullname },
     });
   } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error: error.message });
+    res.status(500).json({
+      message: `Lỗi server`,
+      error: error.message,
+    });
   }
 };
 
