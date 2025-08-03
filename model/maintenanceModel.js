@@ -27,7 +27,7 @@ const create = async (data) => {
     next_due_date,
     note,
   } = data;
-  const [result] = await db.query(
+  const result = await db.query(
     `INSERT INTO maintenance_schedule (
         device_id, maintenance_type_id, schedule_type,
         frequency_value, frequency_unit, next_due_date, note

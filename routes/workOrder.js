@@ -8,7 +8,7 @@ router.get(
   workOrderController.getWorkOrdersBySchedule
 );
 router.get("/", workOrderController.getAll);
-router.post("/assign/:id", workOrderController.pickTechnicianForWorkOrder);
+router.post("/assign", workOrderController.pickTechnicianForWorkOrder);
 router.put("/update/:id", workOrderController.updateWorkOrder);
 
 module.exports = router;

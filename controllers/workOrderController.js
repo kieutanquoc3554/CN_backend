@@ -33,9 +33,8 @@ const getWorkOrdersBySchedule = async (req, res) => {
 const pickTechnicianForWorkOrder = async (req, res) => {
   try {
     const { technician, work_order_id } = req.body;
-    const { id } = req.params;
     const assigned_at = new Date();
-    await workOrderModel.pickTechnicianForWorkOrder(id, technician);
+    await workOrderModel.pickTechnicianForWorkOrder(work_order_id, technician);
     await assignmentModel.assignTechnician(
       technician,
       work_order_id,
