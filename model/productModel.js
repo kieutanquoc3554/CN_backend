@@ -51,18 +51,7 @@ const createDevice = async (
 };
 
 // Cập nhật thiết bị
-const updateDevice = async (
-  id,
-  name,
-  func,
-  code,
-  type,
-  location,
-  status,
-  priority,
-  desc,
-  attributes = []
-) => {
+const updateDevice = async (id, data) => {
   await db.query(
     `UPDATE devices 
      SET name = $1, function = $2, code = $3, type = $4, location = $5, 
