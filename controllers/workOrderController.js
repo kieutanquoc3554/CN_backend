@@ -32,7 +32,10 @@ const getWorkOrdersBySchedule = async (req, res) => {
 
 const pickTechnicianForWorkOrder = async (req, res) => {
   try {
-    const { technician, work_order_id } = req.body;
+    let { technician, work_order_id } = req.body;
+    technician = parseInt(technician);
+    work_order_id = parseInt(work_order_id);
+
     const assigned_at = new Date();
     await workOrderModel.pickTechnicianForWorkOrder(work_order_id, technician);
     await assignmentModel.assignTechnician(

@@ -14,7 +14,7 @@ const getByWorkOrderId = async (work_order_id) => {
 const assignTechnician = async (technician, work_order_id, assigned_at) => {
   const result = await db.query(
     `INSERT INTO assignments (technician_id, work_order_id, assigned_at)
-     VALUES ($1, $2, $3)`,
+     VALUES ($1, $2, $3) RETURNING id`,
     [technician, work_order_id, assigned_at]
   );
   return { id: result.rows[0].id };
