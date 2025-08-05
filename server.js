@@ -11,6 +11,9 @@ const assignmentRoutes = require("./routes/assignment");
 const reportRoutes = require("./routes/report");
 const workOrderLogRoutes = require("./routes/workOrderLog");
 const historyRoutes = require("./routes/maintenanceHistoryRoutes");
+const dashboardRoute = require("./routes/dashboardRoutes");
+const machineDetailRoutes = require("./routes/machineDetailRoutes.js");
+const sparePartRoutes = require("./routes/sparePartRoutes.js");
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +26,9 @@ app.use("/api/assignments", assignmentRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/logs", workOrderLogRoutes);
 app.use("/api/maintenance-history", historyRoutes);
+app.use("/api/dashboard", dashboardRoute);
+app.use("/api/machine-details", machineDetailRoutes);
+app.use("/api/spare-parts", sparePartRoutes);
 app.get("/", (req, res) => {
   res.json({ msg: "Hello from Node backend" });
 });

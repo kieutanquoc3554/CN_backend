@@ -29,7 +29,7 @@ const createHistory = async (data) => {
   } = data;
   const result = await db.query(
     `INSERT INTO maintenance_history (device_id, work_order_id, performed_by, maintenance_date, status, condition_after, common_issues) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
     [
       device_id,
       work_order_id,

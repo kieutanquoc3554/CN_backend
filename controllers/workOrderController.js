@@ -69,10 +69,26 @@ const updateWorkOrder = async (req, res) => {
   }
 };
 
+const deleteWorkOrder = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await workOrderModel.deleteWorkOrderById(id);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Work order not found" });
+    }
+    res.status(200).json({ message: "Work order deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting work order:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   getAll,
   createWorkOrder,
   getWorkOrdersBySchedule,
   pickTechnicianForWorkOrder,
   updateWorkOrder,
+  deleteWorkOrder,
 };

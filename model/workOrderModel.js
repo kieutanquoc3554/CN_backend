@@ -78,10 +78,35 @@ const updateWorkOrder = async (id, data) => {
   return result.rowCount;
 };
 
+const deleteWorkOrderById = async (id) => {
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN");
+    await client.query(`DELETE FROM assignments WHERE work_order_id = $1`, [
+      id,
+    ]);
+    await client.query(`DELETE FROM work_order_logs WHERE work_order_id = $1`, [
+      id,
+    ]);
+    const result = await client.query(`DELETE FROM work_orders WHERE id = $1`, [
+      id,
+    ]);
+
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = {
   getAll,
   create,
   getWorkOrdersBySchedule,
   pickTechnicianForWorkOrder,
   updateWorkOrder,
+  deleteWorkOrderById,
 };

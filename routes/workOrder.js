@@ -10,5 +10,6 @@ router.get(
 router.get("/", workOrderController.getAll);
 router.post("/assign", workOrderController.pickTechnicianForWorkOrder);
 router.put("/update/:id", workOrderController.updateWorkOrder);
+router.delete("/:id", workOrderController.deleteWorkOrder);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const {
   createDevice,
   getDeviceById,
   maintenanceHistory,
+  updateDeviceModel,
 } = require("../model/productModel");
 
 const getAll = async (req, res) => {
@@ -21,6 +22,17 @@ const createNewDevices = async (req, res) => {
     attributes
   );
   return res.status(201).json({ message: "Đã tạo thiết bị", id });
+};
+
+const updateDevice = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updated = await updateDeviceModel(id, req.body);
+    res.status(200).json(updated);
+  } catch (error) {
+    console.error("Lỗi update thiết bị:", error);
+    res.status(500).json({ error: "Lỗi server khi cập nhật thiết bị" });
+  }
 };
 
 const getDevice = async (req, res) => {
@@ -44,4 +56,10 @@ const getHistoryByDevice = async (req, res) => {
   }
 };
 
-module.exports = { getAll, createNewDevices, getDevice, getHistoryByDevice };
+module.exports = {
+  getAll,
+  createNewDevices,
+  getDevice,
+  getHistoryByDevice,
+  updateDevice,
+};

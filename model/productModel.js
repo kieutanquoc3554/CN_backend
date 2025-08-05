@@ -2,7 +2,9 @@ const db = require("../config/db"); // db là Pool của 'pg'
 
 // Lấy toàn bộ thiết bị
 const getAllDevice = async () => {
-  const { rows } = await db.query(`SELECT * FROM devices`);
+  const { rows } = await db.query(`SELECT * FROM devices
+ORDER BY name ASC;
+`);
   return rows;
 };
 
@@ -51,25 +53,30 @@ const createDevice = async (
 };
 
 // Cập nhật thiết bị
-const updateDevice = async (id, data) => {
+
+const updateDeviceModel = async (id, data) => {
+  const { name, model, status, priority, desc, attributes } = data;
   await db.query(
-    `UPDATE devices 
-     SET name = $1, function = $2, code = $3, type = $4, location = $5, 
-         status = $6, priority_level = $7, description = $8 
-     WHERE id = $9`,
-    [name, func, code, type, location, status, priority, desc, id]
+    `UPDATE devices SET name = $1, model = $2, status = $3, priority_level = $4, description = $5 WHERE id = $6`,
+    [name, model, status, priority, desc, id]
   );
-
-  // Có thể cập nhật bằng cách xóa thuộc tính cũ rồi thêm lại
   await db.query(`DELETE FROM device_attributes WHERE device_id = $1`, [id]);
-
-  for (const { name: attrName, value: attrValue } of attributes) {
-    await db.query(
-      `INSERT INTO device_attributes (device_id, attribute_name, attribute_value)
-       VALUES ($1, $2, $3)`,
-      [id, attrName, attrValue]
-    );
+  if (attributes?.length > 0) {
+    const values = [];
+    const placeholders = attributes
+      .map((attr, index) => {
+        const baseIndex = index * 3;
+        values.push(id, attr.name, attr.value);
+        return `($${baseIndex + 1}, $${baseIndex + 2}, $${baseIndex + 3})`;
+      })
+      .join(", ");
+    const insertQuery = `
+      INSERT INTO device_attributes (device_id, name, value)
+      VALUES ${placeholders}
+    `;
+    await db.query(insertQuery, values);
   }
+  return { success: true };
 };
 
 // Xóa thiết bị
@@ -95,7 +102,7 @@ module.exports = {
   getAllDevice,
   getDeviceById,
   createDevice,
-  updateDevice,
+  updateDeviceModel,
   deleteDevice,
   maintenanceHistory,
 };
