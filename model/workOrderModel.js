@@ -11,6 +11,7 @@ const getAll = async () => {
     JOIN devices d ON wo.device_id = d.id
     JOIN maintenance_types mt ON wo.maintenance_type_id = mt.id
     LEFT JOIN users u ON wo.performed_by = u.id
+    ORDER BY wo.start_time DESC
   `);
   return result.rows;
 };
