@@ -69,6 +69,11 @@ const updateWorkOrder = async (id, data) => {
   const keys = Object.keys(data);
   const values = Object.values(data);
 
+  if (data.status === "Completed") {
+    keys.push("end_time");
+    values.push(new Date());
+  }
+
   const setClause = keys.map((key, i) => `${key} = $${i + 1}`).join(", ");
   const query = `UPDATE work_orders SET ${setClause} WHERE id = $${
     keys.length + 1
