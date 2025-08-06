@@ -19,4 +19,7 @@ const createSparePart = async (req, res) => {
   }
 };
 
-module.exports = { getSpareParts, createSparePart };
+module.exports = {
+  getSpareParts,
+  createSparePart,
+};

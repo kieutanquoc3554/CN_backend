@@ -14,6 +14,7 @@ const historyRoutes = require("./routes/maintenanceHistoryRoutes");
 const dashboardRoute = require("./routes/dashboardRoutes");
 const machineDetailRoutes = require("./routes/machineDetailRoutes.js");
 const sparePartRoutes = require("./routes/sparePartRoutes.js");
+const inventoryRoutes = require("./routes/inventoryRoutes.js");
 
 app.use(cors());
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use("/api/maintenance-history", historyRoutes);
 app.use("/api/dashboard", dashboardRoute);
 app.use("/api/machine-details", machineDetailRoutes);
 app.use("/api/spare-parts", sparePartRoutes);
+app.use("/api/inventory", inventoryRoutes);
 app.get("/", (req, res) => {
   res.json({ msg: "Hello from Node backend" });
 });

@@ -6,7 +6,7 @@ const getAllSpareParts = async () => {
     FROM spare_parts sp
     LEFT JOIN devices d ON sp.device_id = d.id
     LEFT JOIN machine_details md ON sp.detail_id = md.id
-    ORDER BY sp.id DESC
+    ORDER BY d.name DESC
   `);
   return result.rows;
 };
@@ -34,7 +34,24 @@ const createSparePart = async (part) => {
   return result.rows[0];
 };
 
+const getSparePartById = async (id) => {
+  const result = await db.query(`SELECT * FROM spare_parts WHERE id = $1`, [
+    id,
+  ]);
+  return result.rows[0];
+};
+
+const updateStock = async (id, newStock) => {
+  const result = await db.query(
+    `UPDATE spare_parts SET current_stock = $1 WHERE id = $2 RETURNING *`,
+    [newStock, id]
+  );
+  return result.rows[0];
+};
+
 module.exports = {
   getAllSpareParts,
   createSparePart,
+  getSparePartById,
+  updateStock,
 };
