@@ -7,7 +7,7 @@ const getAll = async () => {
                     JOIN devices d ON ms.device_id = d.id
                     LEFT JOIN spare_parts sp ON ms.spare_part_id = sp.id
                     JOIN maintenance_types mt ON ms.maintenance_type_id = mt.id
-                    ORDER BY d.name ASC`);
+                    ORDER BY ms.next_due_date DESC`);
   return result.rows;
 };
 
