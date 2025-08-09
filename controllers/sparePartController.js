@@ -19,7 +19,18 @@ const createSparePart = async (req, res) => {
   }
 };
 
+const getSparePartByDeviceId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const spare_part = await sparePartModel.getSparePartByDeviceId(id);
+    res.status(200).json(spare_part);
+  } catch (error) {
+    res.status(500).json({ error: "Không tải được danh sách vật tư" });
+  }
+};
+
 module.exports = {
   getSpareParts,
   createSparePart,
+  getSparePartByDeviceId,
 };

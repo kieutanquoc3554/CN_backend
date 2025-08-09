@@ -3,7 +3,7 @@ const db = require("../config/db"); // db là Pool của 'pg'
 // Lấy toàn bộ thiết bị
 const getAllDevice = async () => {
   const { rows } = await db.query(`SELECT * FROM devices
-ORDER BY name ASC;
+ORDER BY code ASC;
 `);
   return rows;
 };

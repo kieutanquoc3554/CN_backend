@@ -49,9 +49,23 @@ const updateStock = async (id, newStock) => {
   return result.rows[0];
 };
 
+const getSparePartByDeviceId = async (id) => {
+  const result = await db.query(
+    `SELECT sp.*, d.name AS device_name, md.name AS detail_name
+    FROM spare_parts sp
+    LEFT JOIN devices d ON sp.device_id = d.id
+    LEFT JOIN machine_details md ON sp.detail_id = md.id
+    WHERE sp.device_id = $1
+    ORDER BY sp.name ASC`,
+    [id]
+  );
+  return result.rows;
+};
+
 module.exports = {
   getAllSpareParts,
   createSparePart,
   getSparePartById,
   updateStock,
+  getSparePartByDeviceId,
 };

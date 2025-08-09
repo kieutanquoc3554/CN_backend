@@ -2,9 +2,10 @@ const db = require("../config/db");
 
 const getAll = async () => {
   const result =
-    await db.query(`SELECT ms.*, d.name AS device_name, mt.name AS maintenance_type_name
+    await db.query(`SELECT ms.*, d.name AS device_name, mt.name AS maintenance_type_name, sp.name AS spare_part_name
                     FROM maintenance_schedule ms
                     JOIN devices d ON ms.device_id = d.id
+                    LEFT JOIN spare_parts sp ON ms.spare_part_id = sp.id
                     JOIN maintenance_types mt ON ms.maintenance_type_id = mt.id`);
   return result.rows;
 };
@@ -20,6 +21,7 @@ const getById = async (id) => {
 const create = async (data) => {
   const {
     device_id,
+    spare_part_id,
     maintenance_type_id,
     schedule_type,
     frequency_value,
@@ -29,11 +31,12 @@ const create = async (data) => {
   } = data;
   const result = await db.query(
     `INSERT INTO maintenance_schedule (
-        device_id, maintenance_type_id, schedule_type,
+        device_id, spare_part_id, maintenance_type_id, schedule_type,
         frequency_value, frequency_unit, next_due_date, note
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
     [
       device_id,
+      spare_part_id,
       maintenance_type_id,
       schedule_type,
       frequency_value,
